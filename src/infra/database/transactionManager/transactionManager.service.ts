@@ -11,7 +11,7 @@ export class TransactionManagerService {
     private readonly prisma: PrismaService,
   ) {}
 
-  run(cb: () => any | Promise<any>) {
+  run<T = any>(cb: () => T | Promise<T>) {
     return this.prisma.$transaction(async (tx) => {
       this.als.enterWith({
         ...this.als.getStore(),

@@ -1,6 +1,0 @@
-model SellerModel {
-  id   String @id @default(uuid()) @db.Uuid
-  name String
-
-  @@map("seller")
-}

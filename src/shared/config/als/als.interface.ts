@@ -4,10 +4,8 @@ import { DefaultArgs } from '@prisma/client/runtime/library';
 
 import { AsyncLocalStorage } from 'async_hooks';
 
-import Marketplace from '@/module/marketplace/domain/marketplace.domain';
-
 export interface AlsData {
-  marketplace: Marketplace;
+  user: any;
   tx: Omit<
     PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
     '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'

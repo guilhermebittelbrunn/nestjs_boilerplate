@@ -21,8 +21,8 @@ export async function setupPostgresSchema() {
   global.schema = `test_${uuid()}`;
   global.connectionString = `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}?schema=${global.schema}`;
 
-  process.env.DATABASE_URL = global.connectionString;
-  global.process.env.DATABASE_URL = global.connectionString;
+  process.env.POSTGRES_URL = global.connectionString;
+  global.process.env.POSTGRES_URL = global.connectionString;
 
   console.info(`Running prisma migrate (${global.schema}...`);
 

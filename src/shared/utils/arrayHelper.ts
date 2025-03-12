@@ -33,3 +33,14 @@ export function getIntersections(arr1: number[], arr2: number[]): number[] {
 
   return intersections; // No intersection found
 }
+
+export function separateIds(ids: string[]): { uuids: string[]; nonUuids: string[]; allIds: string[] } {
+  return {
+    // only UUIDs
+    uuids: ids.filter((id) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)),
+    // all non UUIDs
+    nonUuids: ids.filter((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)),
+    // all ids, ensure immutability
+    allIds: [...ids],
+  };
+}

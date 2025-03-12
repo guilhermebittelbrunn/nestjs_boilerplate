@@ -29,15 +29,49 @@ async function bootstrap() {
 
 function buildOpenApiDocs(app: NestFastifyApplication) {
   const generalDocsConfig = new DocumentBuilder()
-    .setTitle('Example docs')
-    .setDescription('Api Documents')
+    .setTitle('boilerplate')
+    .setDescription('Documentação da API boilerplate')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth(
+      {
+        description: `Please enter token without any prefix`,
+        name: 'Authorization',
+        bearerFormat: 'Bearer',
+        scheme: 'Bearer',
+        type: 'http',
+        in: 'Header',
+      },
+      'authorization',
+    )
     .build();
 
   const generalDocsDocument = SwaggerModule.createDocument(app, generalDocsConfig);
 
-  SwaggerModule.setup('docs', app, generalDocsDocument);
+  // set jwt auth in all endpoints by default
+  generalDocsDocument.paths = Object.keys(generalDocsDocument.paths).reduce((acc, path) => {
+    acc[path] = Object.keys(generalDocsDocument.paths[path]).reduce((methods, method) => {
+      methods[method] = {
+        ...generalDocsDocument.paths[path][method],
+        security: [{ authorization: [] }],
+      };
+      return methods;
+    }, {});
+    return acc;
+  }, {});
+
+  SwaggerModule.setup('docs', app, generalDocsDocument, {
+    swaggerOptions: {
+      persistAuthorization: true, // keeps the authentication after reloading the page
+      displayRequestDuration: true,
+      filter: true,
+      tryItOutEnabled: true,
+    },
+    customCss: `
+      .topbar-wrapper img { content: url('https://your-logo-url.com/logo.png'); }
+      .swagger-ui .info { margin-bottom: 20px; }
+      .swagger-ui .opblock-summary-method { font-weight: bold; font-size: 14px; }
+  `,
+  });
 }
 
 bootstrap();

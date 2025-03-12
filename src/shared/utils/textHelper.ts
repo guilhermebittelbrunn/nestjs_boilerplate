@@ -30,6 +30,10 @@ export function formatIdentificationNumber(value: string): string {
   return value;
 }
 
+export function capitalizeFirstLetter(val: string): string {
+  return String(val).charAt(0).toUpperCase() + String(val).toLocaleLowerCase().slice(1);
+}
+
 // export function formatDate(date: Date | string) {
 //   date = new Date(date);
 

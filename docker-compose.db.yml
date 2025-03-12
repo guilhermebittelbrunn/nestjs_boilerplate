@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   database:
-    container_name: nestjs-database
+    container_name: database
     image: postgres:latest
     restart: unless-stopped
     ports:

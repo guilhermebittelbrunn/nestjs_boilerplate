@@ -1,10 +1,8 @@
-import { Controller, Get, UseGuards, Version, VERSION_NEUTRAL } from '@nestjs/common';
+import { Controller, Get, Version, VERSION_NEUTRAL } from '@nestjs/common';
 
 import { AppService } from './app.service';
-import { JwtAuthGuard } from './shared/guards/jwt-auth.guard';
 
 @Controller()
-@UseGuards(JwtAuthGuard)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

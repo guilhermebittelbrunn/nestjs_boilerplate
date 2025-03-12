@@ -1,33 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { MarketplaceModel } from '@prisma/client';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { ValidateMarketplaceAccess } from '../../infra/auth/validateMarketplaceAccess/validateMarketplaceAccess.service';
-
-export const JWT_DEFAULT_STRATEGY = 'jwt';
-
-/*
-  @todo, change this interface to shared types
-*/
-export interface ITokenPayload {
-  marketplaceId: string;
-}
+import { ITokenPayload, JWT_DEFAULT_STRATEGY } from '../types/auth';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, JWT_DEFAULT_STRATEGY) {
-  constructor(
-    config: ConfigService,
-    private readonly validateMarketplaceAccess: ValidateMarketplaceAccess,
-  ) {
+  constructor(config: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: config.getOrThrow('jwt.secret'),
     });
   }
 
-  validate({ marketplaceId }: ITokenPayload): Promise<MarketplaceModel | null> {
-    return this.validateMarketplaceAccess.validate(marketplaceId);
+  validate({ userId }: ITokenPayload): Promise<{ userId: string }> {
+    // service to validade the user
+    return Promise.resolve({ userId });
   }
 }

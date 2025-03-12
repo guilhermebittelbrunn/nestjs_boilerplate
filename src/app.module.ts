@@ -1,3 +1,4 @@
+import { CacheModule } from '@nestjs/cache-manager';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -5,24 +6,24 @@ import { LoggerModule } from 'nestjs-pino';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ValidateMarketplaceAccessModule } from './infra/auth/validateMarketplaceAccess/validateMarketplaceAccess.module';
 import { PrismaModule } from './infra/database/prisma/prisma.module';
 import { TransactionManagerModule } from './infra/database/transactionManager/transactionManager.module';
-import { MarketplaceModule } from './module/marketplace/useCases/marketplace/marketplace.module';
-import { SellerModule } from './module/seller/seller.module';
 import { AlsMiddleware } from './shared/config/als/als.middleware';
 import { AlsModule } from './shared/config/als/als.module';
 import configuration from './shared/config/configuration';
-import { TransformResponseInterceptor } from './shared/interceptors/transform-response/transform-response.interceptor';
+import { TransformResponseInterceptor } from './shared/interceptors/transformResponse/transformResponse.interceptor';
 import { JwtStrategy } from './shared/strategies/jwt.strategy';
+import { UserApplicationModule } from './module/user/useCases/user.application.module';
 
 @Module({
   imports: [
     // setup
     PrismaModule,
     TransactionManagerModule,
-    ValidateMarketplaceAccessModule,
     AlsModule,
+    CacheModule.register({
+      isGlobal: true,
+    }),
     ConfigModule.forRoot({
       cache: true,
       isGlobal: true,
@@ -46,8 +47,7 @@ import { JwtStrategy } from './shared/strategies/jwt.strategy';
       },
     }),
     // modules
-    SellerModule,
-    MarketplaceModule,
+    UserApplicationModule,
   ],
   controllers: [AppController],
   providers: [

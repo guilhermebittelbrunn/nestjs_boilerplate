@@ -8,7 +8,7 @@ export class AlsMiddleware implements NestMiddleware {
 
   use(req: any, res: any, next: () => void) {
     const store = {
-      marketplace: undefined,
+      user: req.headers['x-user-id'],
       tx: undefined,
     };
 

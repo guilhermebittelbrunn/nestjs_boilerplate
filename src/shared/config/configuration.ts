@@ -14,4 +14,20 @@ export default () => ({
     secret: process.env.JWT_SECRET,
     refreshSecret: process.env.JWT_REFRESH_SECRET,
   },
+  s3: {
+    region: process.env.AWS_S3_REGION,
+    accessKeyId: process.env.AWS_S3_KEY,
+    secretAccessKey: process.env.AWS_S3_SECRET,
+    assetsBucket: process.env.AWS_S3_ASSETS_BUCKET,
+  },
+  crypto: {
+    key: process.env.CRYPTO_KEY,
+  },
+  zoop: {
+    apiKey: process.env.ZOOP_API_KEY,
+    marketplaceId: process.env.ZOOP_MARKETPLACE_ID,
+    baseUrl: process.env.ZOOP_BASE_URL,
+    sellerId: process.env.ZOOP_SELLER_ID,
+    webhookSecret: process.env.ZOOP_WEBHOOK_URL,
+  },
 });
