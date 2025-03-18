@@ -14,13 +14,4 @@ export class UserDTO {
 
   @ApiProperty()
   type: UserTypeEnum;
-
-  @ApiProperty()
-  createdAt: Date;
-
-  @ApiProperty()
-  updatedAt: Date;
-
-  @ApiProperty()
-  deleted: boolean;
 }

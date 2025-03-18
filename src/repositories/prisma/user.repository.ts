@@ -17,4 +17,9 @@ export class UserRepository extends BaseRepository<'userModel', User, UserModel>
   constructor(prisma: PrismaService, als: Als) {
     super('userModel', prisma, als);
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.manager().findUnique({ where: { email } });
+    return this.mapper.toDomainOrNull(user);
+  }
 }

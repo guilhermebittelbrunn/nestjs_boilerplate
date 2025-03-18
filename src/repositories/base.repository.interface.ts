@@ -53,6 +53,7 @@ export interface IBaseRepository<Domain> {
   findById(id: GenericId): SingleEntityResponse<Domain>;
   findByIds(ids: GenericId[]): MultiEntityResponse<Domain>;
   findAll(): MultiEntityResponse<Domain>;
+  findByIdentifier(identifier: Partial<Record<keyof Domain, any>>): SingleEntityResponse<Domain>;
   createBulk(data: Domain[]): MultiEntityResponse<Domain>;
   create(data: Domain): SingleEntityResponse<Domain>;
   update(data: UpdateFields<Domain>): Promise<RawID>;

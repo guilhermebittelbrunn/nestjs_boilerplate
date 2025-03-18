@@ -7,8 +7,8 @@ import { TransactionManagerService } from '@/infra/database/transactionManager/t
 import { SignUpService } from './signUp.service';
 import { SignUpDTO } from './dto/signUp.dto';
 
-@Controller('/sign-up')
-@ApiTags('sign-up')
+@Controller('/signup')
+@ApiTags('auth')
 export class SignUpController {
   constructor(
     private readonly useCase: SignUpService,
@@ -17,14 +17,7 @@ export class SignUpController {
 
   @Post()
   async handle(@ValidatedBody() body: SignUpDTO): Promise<UserDTO> {
-    try {
-      const result = await this.transactionManager.run(() => this.useCase.execute(body));
-      return UserMapper.toDTO(result);
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      throw new HttpException('Unexpected error', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    const result = await this.transactionManager.run(() => this.useCase.execute(body));
+    return UserMapper.toDTO(result);
   }
 }

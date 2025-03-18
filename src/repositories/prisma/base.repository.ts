@@ -75,6 +75,11 @@ export class BaseRepository<ModelKey extends PrismaModel, Domain extends Entity<
     return entities.map(this.mapper.toDomain);
   }
 
+  async findByIdentifier(identifier: Partial<Record<keyof Domain, any>>): Promise<Domain | null> {
+    const entity = await (this.manager().findFirst as any)({ where: identifier });
+    return this.mapper.toDomainOrNull(entity);
+  }
+
   async create(data: Domain): Promise<Domain> {
     const rawRecord = await this.mapper.toPersistence(data);
 

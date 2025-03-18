@@ -7,4 +7,7 @@ export class SignUpDTO {
 
   @IsString()
   password: string;
+
+  @IsString()
+  name: string;
 }

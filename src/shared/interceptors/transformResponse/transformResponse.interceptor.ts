@@ -1,6 +1,16 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, StreamableFile } from '@nestjs/common';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  StreamableFile,
+  HttpException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+
+const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
 /**
  * Thanks to this interceptor, all responses will be wrapped in a data object.
@@ -34,6 +44,17 @@ export class TransformResponseInterceptor implements NestInterceptor {
         }
 
         return { data: response };
+      }),
+      catchError((error) => {
+        if (!isDev) {
+          // this.loggerService.create({ error, payload });
+        }
+
+        if (error instanceof HttpException) {
+          throw error;
+        }
+
+        throw new InternalServerErrorException();
       }),
     );
   }

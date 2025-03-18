@@ -14,10 +14,14 @@ import configuration from './shared/config/configuration';
 import { TransformResponseInterceptor } from './shared/interceptors/transformResponse/transformResponse.interceptor';
 import { JwtStrategy } from './shared/strategies/jwt.strategy';
 import { UserApplicationModule } from './module/user/useCases/user.application.module';
+import { JwtModule } from './infra/jwt/jwt.module';
+import { ValidateUserAccessModule } from './module/user/domain/user/validateUserAccess/validateUserAccess.module';
+import { JwtRefreshStrategy } from './shared/strategies/jwtRefresh.strategy';
 
 @Module({
   imports: [
     // setup
+    ValidateUserAccessModule,
     PrismaModule,
     TransactionManagerModule,
     AlsModule,
@@ -57,6 +61,7 @@ import { UserApplicationModule } from './module/user/useCases/user.application.m
     },
     AppService,
     JwtStrategy,
+    JwtRefreshStrategy,
   ],
 })
 export class AppModule implements NestModule {
